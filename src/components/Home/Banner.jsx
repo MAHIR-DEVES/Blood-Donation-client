@@ -1,6 +1,12 @@
 import React from 'react';
+import useRole from '../../hooks/useRole';
+import LoadingSpinner from '../Shared/LoadingSpinner';
+import { useNavigate } from 'react-router';
 
 const Banner = () => {
+  const [role, isRoleLoading] = useRole();
+  const navigate = useNavigate();
+  if (isRoleLoading) return LoadingSpinner;
   return (
     <div className="relative bg-red-700 overflow-hidden pb-10">
       {/* Background Image */}
@@ -23,10 +29,23 @@ const Banner = () => {
             difference today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 ">
-            <button className="bg-white text-red-700 font-bold py-3 px-8 rounded-lg hover:bg-red-50 transition duration-300 text-lg">
-              Join a Donation Center
-            </button>
-            <button className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-red-700 transition duration-300 text-lg">
+            {role === 'donor' || role === 'admin' || role === 'volente' ? (
+              <button className="bg-white text-red-700 font-bold py-3 px-8 rounded-lg hover:bg-red-50 transition duration-300 text-lg">
+                You Already joined Our Program
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/signup')}
+                className="bg-white text-red-700 font-bold py-3 px-8 rounded-lg hover:bg-red-50 transition duration-300 text-lg cursor-pointer"
+              >
+                Join a Donation Center
+              </button>
+            )}
+
+            <button
+              onClick={() => navigate('/search')}
+              className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-red-700 transition duration-300 text-lg cursor-pointer"
+            >
               Search Donors
             </button>
           </div>

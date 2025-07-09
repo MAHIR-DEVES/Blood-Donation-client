@@ -17,7 +17,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const query = useQuery({
-    queryKey: ['user'],
+    queryKey: ['user', user?.email],
     queryFn: async () => {
       const { data } = await axios(
         `${import.meta.env.VITE_API_URL}/user/${user?.email}`
