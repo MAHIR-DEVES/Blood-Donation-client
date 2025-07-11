@@ -12,11 +12,19 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
           transition
           px-4
           w-full
-          ${outline ? 'bg-white' : 'bg-lime-500'}
-          ${outline ? 'border-black' : 'border-lime-500'}
+          ${
+            outline
+              ? 'bg-white'
+              : 'text-white bg-[#eb2c29] hover:bg-[#d12522] focus:outline-none '
+          }
+          ${
+            outline
+              ? 'border-black'
+              : 'text-white bg-[#eb2c29] hover:bg-[#d12522] focus:outline-none '
+          }
           ${outline ? 'text-black' : 'text-white'}
           ${small ? 'text-sm' : 'text-md'}
-          ${small ? 'py-1' : 'py-3'}
+          ${small ? 'py-1' : 'py-2'}
           ${small ? 'font-light' : 'font-semibold'}
           ${small ? 'border-[1px]' : 'border-2'}
         `}
@@ -24,16 +32,16 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
       {Icon && (
         <Icon
           size={24}
-          className='
+          className="
               absolute
               left-4
               top-3
-            '
+            "
         />
       )}
       {label}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

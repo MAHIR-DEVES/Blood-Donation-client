@@ -10,3 +10,24 @@ export const imageUpload = async imagedata => {
 
   return data?.data?.display_url;
 };
+
+// ------------------------
+
+// utils/imageUpload.js
+
+// import { generateReactHelpers } from '@uploadthing/react/hooks';
+
+// const { uploadFiles } = generateReactHelpers();
+
+// export const imageUpload = async file => {
+//   try {
+//     const res = await uploadFiles('imageUploader', {
+//       files: [file],
+//     });
+
+//     return res?.[0]?.url;
+//   } catch (err) {
+//     console.error('UploadThing error:', err);
+//     return null;
+//   }
+// };

@@ -4,11 +4,11 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import Container from '../Container';
 import useAuth from '../../../hooks/useAuth';
 import avatarImg from '../../../assets/images/placeholder.jpg';
-import logo from '../../../assets/images/navlogo.png';
 import { IoSearch } from 'react-icons/io5';
 import axios from 'axios';
 // import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import Logo from '../Logo';
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -114,23 +114,7 @@ const Navbar = () => {
         <Container>
           <div className="flex items-center justify-between">
             {/* Logo and Mobile Menu Button */}
-            <div className="flex items-center gap-4">
-              <Link to="/" className="flex-shrink-0">
-                <div className="bg-white flex items-center gap-3 p-2 shadow-sm">
-                  <img
-                    src={logo}
-                    alt="BloodHero Logo"
-                    width={20}
-                    height={10}
-                    className="object-contain"
-                  />
-                  <span className="text-2xl font-bold text-red-600 tracking-tight">
-                    BloodHero
-                  </span>
-                </div>
-              </Link>
-            </div>
-
+            <Logo></Logo>
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <ul className="flex gap-6  justify-center items-center">

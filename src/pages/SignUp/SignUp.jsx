@@ -12,7 +12,7 @@ const SignUp = () => {
 
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('');
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
 
   // Load Districts & Upazilas
@@ -27,15 +27,15 @@ const SignUp = () => {
 
   // Filter upazilas based on selected district
   useEffect(() => {
-    if (selectedDistrict) {
+    if (selectedDistrictId) {
       const filtered = upazilas.filter(
-        upazila => upazila.district_id === selectedDistrict
+        upazila => upazila.district_id === selectedDistrictId
       );
       setFilteredUpazilas(filtered);
     } else {
       setFilteredUpazilas([]);
     }
-  }, [selectedDistrict, upazilas]);
+  }, [selectedDistrictId, upazilas]);
 
   // Handle Submit
   const handleSubmit = async e => {
@@ -47,7 +47,7 @@ const SignUp = () => {
     const password = form.password.value;
     const confirmPassword = form.confirm_password.value;
     const bloodGroup = form.blood_group.value;
-    const district = form.district.value;
+    const districtId = form.district.value;
     const upazila = form.upazila.value;
     const imageFile = form.image.files[0];
 
@@ -56,7 +56,9 @@ const SignUp = () => {
     }
 
     const imageUrl = await imageUpload(imageFile);
-    console.log(imageUrl);
+
+    const selectedDistrictName =
+      districts.find(d => d.id === districtId)?.name || '';
 
     try {
       const fromData = {
@@ -64,21 +66,19 @@ const SignUp = () => {
         email,
         imageUrl,
         bloodGroup,
-        district,
-        upazila,
+        district: selectedDistrictName.toLowerCase(),
+        upazila: upazila.toLowerCase(),
         role: 'donor',
         status: 'active',
       };
-      console.log(fromData);
 
       const result = await createUser(email, password);
 
-      // Optional: Save to database here
+      // Optional: Save to database
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/users`,
         fromData
       );
-      console.log(data);
 
       navigate('/');
       toast.success('Signup Successful');
@@ -136,7 +136,7 @@ const SignUp = () => {
           <select
             name="district"
             required
-            onChange={e => setSelectedDistrict(e.target.value)}
+            onChange={e => setSelectedDistrictId(e.target.value)}
             className="select select-bordered w-full"
           >
             <option value="">Select District</option>

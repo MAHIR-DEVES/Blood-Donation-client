@@ -38,7 +38,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/search',
-        Component: SearchBlood,
+        element: (
+          <PrivateRoute>
+            <SearchBlood></SearchBlood>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/bloodRequest',
@@ -97,7 +101,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-orders',
+        path: 'donationRequests',
         element: (
           <PrivateRoute>
             <MyOrders />
