@@ -18,7 +18,7 @@ const DonarMenu = () => {
       <MenuItem
         icon={BiSolidDonateBlood}
         label="My Requests "
-        address="donationRequests"
+        address="donation-requests"
       />
       <MenuItem
         icon={FaUser}

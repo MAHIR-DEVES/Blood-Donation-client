@@ -1,54 +1,71 @@
-import { useState } from 'react'
-import DeleteModal from '../../Modal/DeleteModal'
-const CustomerOrderDataRow = () => {
-  let [isOpen, setIsOpen] = useState(false)
-  const closeModal = () => setIsOpen(false)
+import { useState } from 'react';
+import DeleteModal from '../../Modal/DeleteModal';
+const CustomerOrderDataRow = ({ request }) => {
+  const {
+    _id,
+    requesterName,
+    requesterEmail,
+    recipientName,
+    district,
+    upazila,
+    hospitalName,
+    address,
+    bloodGroup,
+    donationDate,
+    donationTime,
+    message,
+    status,
+    profile,
+    role,
+  } = request || {};
+  let [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
 
   return (
     <tr>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <div className='flex items-center'>
-          <div className='flex-shrink-0'>
-            <div className='block relative'>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <div className="block relative">
               <img
-                alt='profile'
-                src='https://i.ibb.co.com/rMHmQP2/money-plant-in-feng-shui-brings-luck.jpg'
-                className='mx-auto object-cover rounded h-10 w-15 '
+                alt="profile"
+                src={profile}
+                className="mx-auto object-cover rounded h-10 w-15 "
               />
             </div>
           </div>
         </div>
       </td>
 
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>Money Plant</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap">{requesterName}</p>
       </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>Indoor</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap">{district}</p>
       </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>$120</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap">{donationDate}</p>
       </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>5</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap">{bloodGroup}</p>
       </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>Pending</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap">{status}</p>
       </td>
 
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <button
           onClick={() => setIsOpen(true)}
-          className='relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-lime-900 leading-tight'
+          className="relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-lime-900 leading-tight"
         >
-          <span className='absolute cursor-pointer inset-0 bg-red-200 opacity-50 rounded-full'></span>
-          <span className='relative cursor-pointer'>Cancel</span>
+          <span className="absolute cursor-pointer inset-0 bg-red-200 opacity-50 rounded-full"></span>
+          <span className="relative cursor-pointer">Cancel</span>
         </button>
 
         <DeleteModal isOpen={isOpen} closeModal={closeModal} />
       </td>
     </tr>
-  )
-}
+  );
+};
 
-export default CustomerOrderDataRow
+export default CustomerOrderDataRow;

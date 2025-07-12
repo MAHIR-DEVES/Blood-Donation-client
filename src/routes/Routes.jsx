@@ -12,13 +12,14 @@ import Statistics from '../pages/Dashboard/Common/Statistics';
 import MainLayout from '../layouts/MainLayout';
 import MyInventory from '../pages/Dashboard/Seller/MyInventory';
 import ManageOrders from '../pages/Dashboard/Seller/ManageOrders';
-import MyOrders from '../pages/Dashboard/Customer/MyOrders';
+
 import DonorDetails from '../pages/DonorDetails/DonorDetails';
 import Blog from '../pages/Blog/Blog';
 import SearchBlood from '../pages/SearchBlood/SearchBlood';
 import BloodRequest from '../pages/BloodRequest/BloodRequest';
 import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails';
 import CreateRequest from '../pages/Dashboard/Customer/CreateRequest';
+import MyRequest from '../pages/Dashboard/Customer/MyRequest';
 
 export const router = createBrowserRouter([
   {
@@ -111,10 +112,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'donationRequests',
+        path: 'donation-requests',
         element: (
           <PrivateRoute>
-            <MyOrders />
+            <MyRequest></MyRequest>
           </PrivateRoute>
         ),
       },
