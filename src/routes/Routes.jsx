@@ -18,6 +18,7 @@ import Blog from '../pages/Blog/Blog';
 import SearchBlood from '../pages/SearchBlood/SearchBlood';
 import BloodRequest from '../pages/BloodRequest/BloodRequest';
 import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails';
+import CreateRequest from '../pages/Dashboard/Customer/CreateRequest';
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +115,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'create-request',
+        element: (
+          <PrivateRoute>
+            <CreateRequest></CreateRequest>
           </PrivateRoute>
         ),
       },
