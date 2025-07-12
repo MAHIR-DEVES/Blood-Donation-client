@@ -20,6 +20,7 @@ import BloodRequest from '../pages/BloodRequest/BloodRequest';
 import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails';
 import CreateRequest from '../pages/Dashboard/Customer/CreateRequest';
 import MyRequest from '../pages/Dashboard/Customer/MyRequest';
+import BloodRequestDetails from '../components/BloodRequest/BloodRequestDetails';
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: '/bloodRequest',
         Component: BloodRequest,
+      },
+      {
+        path: '/blood-request-details/:id',
+        element: (
+          <PrivateRoute>
+            <BloodRequestDetails></BloodRequestDetails>
+          </PrivateRoute>
+        ),
       },
     ],
   },

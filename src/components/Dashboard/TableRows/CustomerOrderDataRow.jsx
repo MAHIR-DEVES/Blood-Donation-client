@@ -1,23 +1,8 @@
 import { useState } from 'react';
 import DeleteModal from '../../Modal/DeleteModal';
 const CustomerOrderDataRow = ({ request }) => {
-  const {
-    _id,
-    requesterName,
-    requesterEmail,
-    recipientName,
-    district,
-    upazila,
-    hospitalName,
-    address,
-    bloodGroup,
-    donationDate,
-    donationTime,
-    message,
-    status,
-    profile,
-    role,
-  } = request || {};
+  const { requesterName, district, bloodGroup, donationDate, status, profile } =
+    request || {};
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
