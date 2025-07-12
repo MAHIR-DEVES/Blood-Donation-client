@@ -17,6 +17,7 @@ import DonorDetails from '../pages/DonorDetails/DonorDetails';
 import Blog from '../pages/Blog/Blog';
 import SearchBlood from '../pages/SearchBlood/SearchBlood';
 import BloodRequest from '../pages/BloodRequest/BloodRequest';
+import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <SearchBlood></SearchBlood>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'donor-card-details/:id',
+        element: (
+          <PrivateRoute>
+            <DonorsCardDetails></DonorsCardDetails>
           </PrivateRoute>
         ),
       },

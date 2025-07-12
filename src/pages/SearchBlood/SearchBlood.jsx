@@ -3,6 +3,7 @@ import Button from '../../components/Shared/Button/Button';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import DonorCard from '../../components/Dashboard/Donors/DonorCard';
+import LoadingSpinner from '../../components/Shared/LoadingSpinner';
 
 const SearchBlood = () => {
   const [bloodGroup, setBloodGroup] = useState('');
@@ -27,9 +28,10 @@ const SearchBlood = () => {
       });
       return data;
     },
-    enabled: !!searchParams, // run only after search
+    enabled: !!searchParams,
   });
-  console.log(data);
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="min-h-screen bg-gray-50">

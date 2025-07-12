@@ -1,7 +1,10 @@
 import React from 'react';
+import Button from '../../Shared/Button/Button';
+import { useNavigate } from 'react-router';
 
 const DonorCard = ({ donor }) => {
   const {
+    _id,
     name,
     email,
     imageUrl = 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80', // better default image
@@ -27,6 +30,8 @@ const DonorCard = ({ donor }) => {
     Unavailable: 'bg-red-100 text-red-800',
     'Recently Donated': 'bg-yellow-100 text-yellow-800',
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="w-full bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
@@ -114,9 +119,10 @@ const DonorCard = ({ donor }) => {
         </div>
 
         <div className="mt-auto">
-          <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 text-sm">
-            Contact Donor
-          </button>
+          <Button
+            onClick={() => navigate(`/donor-card-details/${_id}`)}
+            label={' Contact Donor'}
+          ></Button>
         </div>
       </div>
     </div>
