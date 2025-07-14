@@ -21,6 +21,8 @@ import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails'
 import CreateRequest from '../pages/Dashboard/Customer/CreateRequest';
 import MyRequest from '../pages/Dashboard/Customer/MyRequest';
 import BloodRequestDetails from '../components/BloodRequest/BloodRequestDetails';
+import ManageContent from '../pages/Dashboard/Admin/ManageContent';
+import Dashboard from '../pages/Dashboard/Seller/Dashboard';
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +91,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: '/dashboard',
+        element: (
+          <PrivateRoute>
+            <Dashboard></Dashboard>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'add-plant',
         element: (
           <PrivateRoute>
@@ -109,6 +119,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ManageUsers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'manage-manage',
+        element: (
+          <PrivateRoute>
+            <ManageContent />
           </PrivateRoute>
         ),
       },

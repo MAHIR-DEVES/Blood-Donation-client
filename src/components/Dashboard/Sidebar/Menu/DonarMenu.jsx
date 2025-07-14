@@ -1,6 +1,8 @@
 import { BiSolidDonateBlood } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
 import { IoMdHome } from 'react-icons/io';
+import { IoSearch } from 'react-icons/io5';
+import { SiMicrodotblog } from 'react-icons/si';
 import MenuItem from './MenuItem';
 
 // import BecomeSellerModal from '../../../Modal/BecomeSellerModal';
@@ -25,6 +27,8 @@ const DonarMenu = () => {
         label="Create Requests "
         address="create-request"
       />
+      <MenuItem icon={IoSearch} label="Search Donor" address="/search" />
+      <MenuItem icon={SiMicrodotblog} label="Blog" address="/blog" />
       {/* <div
         onClick={() => setIsOpen(true)}
         className="flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform text-white  hover:bg-gray-300   hover:text-black cursor-pointer"

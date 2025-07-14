@@ -269,7 +269,10 @@ const BloodRequestDetails = () => {
               <button className="flex-1 py-3 px-6 bg-[#eb2c29] hover:bg-[#d12522] text-white font-medium rounded-lg shadow-sm transition-colors">
                 Contact Requester
               </button>
-              <button className="flex-1 py-3 px-6 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg shadow-sm transition-colors">
+              <button
+                onClick={() => navigate('/search')}
+                className="flex-1 py-3 px-6 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg shadow-sm transition-colors"
+              >
                 View Donor List
               </button>
             </div>
