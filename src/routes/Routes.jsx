@@ -5,13 +5,10 @@ import Login from '../pages/Login/Login';
 import SignUp from '../pages/SignUp/SignUp';
 import PrivateRoute from './PrivateRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
-import AddPlant from '../pages/Dashboard/Seller/AddPlant';
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers';
 import Profile from '../pages/Dashboard/Common/Profile';
 import Statistics from '../pages/Dashboard/Common/Statistics';
 import MainLayout from '../layouts/MainLayout';
-import MyInventory from '../pages/Dashboard/Seller/MyInventory';
-import ManageOrders from '../pages/Dashboard/Seller/ManageOrders';
 
 import DonorDetails from '../pages/DonorDetails/DonorDetails';
 import Blog from '../pages/Blog/Blog';
@@ -23,6 +20,9 @@ import MyRequest from '../pages/Dashboard/Customer/MyRequest';
 import BloodRequestDetails from '../components/BloodRequest/BloodRequestDetails';
 import ManageContent from '../pages/Dashboard/Admin/ManageContent';
 import Dashboard from '../pages/Dashboard/Seller/Dashboard';
+import ManageRequest from '../pages/Dashboard/Seller/ManageRequest';
+import AddBlog from '../pages/Dashboard/Seller/AddBlog';
+import ManageBlog from '../pages/Dashboard/Seller/ManageBlog';
 
 export const router = createBrowserRouter([
   {
@@ -99,18 +99,18 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'add-plant',
+        path: 'add-blog',
         element: (
           <PrivateRoute>
-            <AddPlant />
+            <AddBlog></AddBlog>
           </PrivateRoute>
         ),
       },
       {
-        path: 'my-inventory',
+        path: 'manage-blog',
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <ManageBlog></ManageBlog>
           </PrivateRoute>
         ),
       },
@@ -155,8 +155,8 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'manage-orders',
-        element: <ManageOrders />,
+        path: 'manage-request',
+        element: <ManageRequest></ManageRequest>,
       },
     ],
   },

@@ -9,11 +9,11 @@ const Volunteer = () => {
       <MenuItem icon={BsFillHouseAddFill} label="Dashboard" address="" />
       <MenuItem
         icon={MdOutlineManageHistory}
-        label="Manage Orders"
-        address="manage-orders"
+        label="Manage Request"
+        address="manage-request"
       />
-      <MenuItem icon={MdAddBox} label="Add Plant" address="add-plant" />
-      <MenuItem icon={MdHomeWork} label="My Inventory" address="my-inventory" />
+      <MenuItem icon={MdAddBox} label="Add Blog" address="add-blog" />
+      <MenuItem icon={MdHomeWork} label="Manage Blog" address="manage-blog" />
     </>
   );
 };
