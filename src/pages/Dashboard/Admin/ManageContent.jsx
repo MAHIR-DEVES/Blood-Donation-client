@@ -1,6 +1,9 @@
 import React from 'react';
-import { FiEdit, FiTrash2, FiPlus, FiUpload, FiSearch } from 'react-icons/fi';
-import { FaRegFileAlt, FaRegImage } from 'react-icons/fa';
+import { FiPlus, FiUpload, FiSearch } from 'react-icons/fi';
+import ManageContentDataRow from '../../../components/Dashboard/TableRows/ManageContentRow';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
 
 const ManageContent = () => {
   // Sample content data
@@ -42,29 +45,16 @@ const ManageContent = () => {
     },
   ];
 
-  const getStatusColor = status => {
-    switch (status) {
-      case 'Published':
-        return 'bg-green-100 text-green-800';
-      case 'Draft':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'Archived':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-blue-100 text-blue-800';
-    }
-  };
+  const axiosSecure = useAxiosSecure();
+  const { data: contents, isLoading } = useQuery({
+    queryKey: ['manage-contents'],
+    queryFn: async () => {
+      const { data } = await axiosSecure('/contents');
+      return data;
+    },
+  });
 
-  const getTypeIcon = type => {
-    switch (type) {
-      case 'Image':
-        return <FaRegImage className="text-red-500" />;
-      case 'PDF':
-        return <FaRegFileAlt className="text-red-500" />;
-      default:
-        return <FaRegFileAlt className="text-red-500" />;
-    }
-  };
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="p-4 md:p-6 bg-gray-50 min-h-screen">
@@ -104,80 +94,53 @@ const ManageContent = () => {
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-red-200 text-black">
               <tr>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
+                >
+                  Thumbnail
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
                 >
                   Title
                 </th>
+
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Type
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium t uppercase tracking-wider"
                 >
                   Last Updated
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
                 >
                   Status
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
+                >
+                  Update Status
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-right text-xs font-medium  uppercase tracking-wider"
                 >
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {contentItems.map(item => (
-                <tr
-                  key={item.id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">
-                      {item.title}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(item.type)}
-                      <span className="text-gray-500">{item.type}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                    {item.lastUpdated}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${getStatusColor(
-                        item.status
-                      )}`}
-                    >
-                      {item.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex justify-end gap-3">
-                      <button className="text-red-600 hover:text-red-900">
-                        <FiEdit className="w-5 h-5" />
-                      </button>
-                      <button className="text-gray-500 hover:text-gray-700">
-                        <FiTrash2 className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+              {contents.map(item => (
+                <ManageContentDataRow
+                  key={item?._id}
+                  item={item}
+                ></ManageContentDataRow>
               ))}
             </tbody>
           </table>

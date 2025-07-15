@@ -31,7 +31,7 @@ const BlogDetails = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Blood Donation Alert Banner */}
-      <div className="bg-red-600 text-white py-3 px-4 text-center text-sm font-medium">
+      <div className="bg-red-600 text-white py-3 px-4 text-center text-sm font-medium ">
         <span className="animate-pulse">🩸</span> Every blood donation can save
         up to 3 lives. Consider donating today!
       </div>

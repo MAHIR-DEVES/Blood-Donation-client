@@ -1,8 +1,17 @@
-import React from 'react';
-import { FaRegFileAlt, FaRegImage } from 'react-icons/fa';
+import React, { useState } from 'react';
+
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import useRole from '../../../hooks/useRole';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 const ManageContentRow = ({ item }) => {
+  // const [role] = useRole();
+  const [isStatus, setIsStatus] = useState('');
+  const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
+
   const getStatusColor = status => {
     switch (status) {
       case 'Published':
@@ -16,29 +25,54 @@ const ManageContentRow = ({ item }) => {
     }
   };
 
-  const getTypeIcon = type => {
-    switch (type) {
-      case 'Image':
-        return <FaRegImage className="text-red-500" />;
-      case 'PDF':
-        return <FaRegFileAlt className="text-red-500" />;
-      default:
-        return <FaRegFileAlt className="text-red-500" />;
-    }
+  const mutation = useMutation({
+    mutationFn: async isStatus => {
+      const { data } = await axiosSecure.patch(
+        `/blog-status-update/${item?._id}`,
+        {
+          isStatus,
+        }
+      );
+      return data;
+    },
+    onSuccess: data => {
+      // refetch();
+      queryClient.invalidateQueries(['manage-contents']);
+      toast.success('Role successfully updated ');
+      console.log(data);
+    },
+
+    onError: error => {
+      console.log(error);
+    },
+  });
+
+  const handelUpdate = e => {
+    e.preventDefault();
+    mutation.mutate(isStatus);
   };
+
   return (
     <tr key={item?.id} className="hover:bg-gray-50 transition-colors">
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <div className="block relative">
+              <img
+                alt="profile"
+                src={item?.thumbnail}
+                className="mx-auto object-cover rounded h-10 w-15 "
+              />
+            </div>
+          </div>
+        </div>
+      </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="font-medium text-gray-900">{item?.title}</div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center gap-2">
-          {getTypeIcon(item?.type)}
-          <span className="text-gray-500">{item?.type}</span>
-        </div>
-      </td>
+
       <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-        {item?.lastUpdated}
+        {item?.date}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span
@@ -49,6 +83,35 @@ const ManageContentRow = ({ item }) => {
           {item?.status}
         </span>
       </td>
+
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <div className="flex items-center gap-2">
+          <select
+            value={isStatus}
+            onChange={e => setIsStatus(e.target.value)}
+            required
+            className="p-1 border-2 border-lime-300 focus:outline-lime-500 rounded-md text-gray-900 whitespace-no-wrap bg-white"
+            name="category"
+          >
+            <option value="draft">Secreted</option>
+            <option value="draft">Draft</option>
+            <option value="publish">Publish</option>
+          </select>
+          <button
+            type="submit"
+            className="relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-green-500 opacity-50 rounded-full"
+            ></span>
+            <span onClick={handelUpdate} className="relative">
+              Update
+            </span>
+          </button>
+        </div>
+      </td>
+
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <div className="flex justify-end gap-3">
           <button className="text-red-600 hover:text-red-900">
