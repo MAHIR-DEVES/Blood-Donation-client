@@ -11,7 +11,7 @@ const AdminMenu = () => {
       <MenuItem
         icon={BiSolidBookContent}
         label="Content Manage "
-        address="manage-manage"
+        address="content-manage"
       />
     </>
   );

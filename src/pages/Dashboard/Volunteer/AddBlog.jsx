@@ -5,7 +5,7 @@ import { FiArrowLeft, FiImage, FiUpload } from 'react-icons/fi';
 const AddBlog = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-gray-50 min-h-screen py-10">
+    <div className="bg-gray-50 min-h-screen px-2 md:px-5 py-10">
       {/* Header Section */}
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">

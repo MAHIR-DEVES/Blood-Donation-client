@@ -4,11 +4,14 @@ import Button from '../Shared/Button/Button';
 import { imageUpload } from '../../API/utils';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import useRole from '../../hooks/useRole';
+import LoadingSpinner from '../Shared/LoadingSpinner';
 
 const AddBlogForm = () => {
   const editor = useRef(null);
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
+  const [role, isRoleLoading] = useRole();
 
   const handleImageChange = e => {
     const file = e.target.files[0];
@@ -34,6 +37,8 @@ const AddBlogForm = () => {
       thumbnail,
       blogDec,
       status: 'draft',
+      role,
+      date: new Date().toISOString().split('T')[0],
     };
     console.log(fromData);
 
@@ -57,6 +62,8 @@ const AddBlogForm = () => {
       setImage(null);
     }
   };
+
+  if (isRoleLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className=" flex justify-center py-5 text-gray-800 bg-gray-50 ">

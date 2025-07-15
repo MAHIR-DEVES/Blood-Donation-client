@@ -1,25 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 
-import axios from 'axios';
-import VolunteerDataRow from '../../../components/Dashboard/TableRows/VolunteerDataRow';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
-import useRole from '../../../hooks/useRole';
 
-const ManageRequest = () => {
-  const [role, isRoleLoading] = useRole();
+const MyRequest = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
   const { data: requests, isLoading } = useQuery({
-    queryKey: ['manage-request'],
+    queryKey: ['my-request', user?.email],
     queryFn: async () => {
-      const { data } = await axios(
-        `${import.meta.env.VITE_API_URL}/all-request`
-      );
+      const { data } = await axiosSecure(`/my-request/${user?.email}`);
       return data;
     },
   });
 
-  console.log(requests);
-
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
+
   return (
     <>
       <div className="container mx-auto px-4 sm:px-8">
@@ -33,7 +31,7 @@ const ManageRequest = () => {
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Profile
+                      Image
                     </th>
                     <th
                       scope="col"
@@ -45,25 +43,19 @@ const ManageRequest = () => {
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Email
+                      Category
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Blood
+                      Price
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Time
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      Location
+                      Quantity
                     </th>
                     <th
                       scope="col"
@@ -78,24 +70,11 @@ const ManageRequest = () => {
                     >
                       Action
                     </th>
-                    {role === 'admin' ? (
-                      <th
-                        scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                      >
-                        Delete
-                      </th>
-                    ) : (
-                      ''
-                    )}
                   </tr>
                 </thead>
                 <tbody>
-                  {requests?.map(request => (
-                    <VolunteerDataRow
-                      key={request._id}
-                      request={request}
-                    ></VolunteerDataRow>
+                  {requests.map(request => (
+                    <MyRequestDataRow key={request._id} request={request} />
                   ))}
                 </tbody>
               </table>
@@ -107,4 +86,4 @@ const ManageRequest = () => {
   );
 };
 
-export default ManageRequest;
+export default MyRequest;

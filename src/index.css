@@ -4,7 +4,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-sec-500: #eb2c29;
+  --color-sec-500: #dc2626;
   --color-main-500: #ffff;
   --color-accent-500: #d80032;
 }

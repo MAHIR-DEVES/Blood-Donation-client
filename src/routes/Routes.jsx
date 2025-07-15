@@ -15,14 +15,15 @@ import Blog from '../pages/Blog/Blog';
 import SearchBlood from '../pages/SearchBlood/SearchBlood';
 import BloodRequest from '../pages/BloodRequest/BloodRequest';
 import DonorsCardDetails from '../components/Dashboard/Donors/DonorsCardDetails';
-import CreateRequest from '../pages/Dashboard/Customer/CreateRequest';
-import MyRequest from '../pages/Dashboard/Customer/MyRequest';
+import CreateRequest from '../pages/Dashboard/Donor/CreateRequest';
+import MyRequest from '../pages/Dashboard/Donor/MyRequest';
 import BloodRequestDetails from '../components/BloodRequest/BloodRequestDetails';
 import ManageContent from '../pages/Dashboard/Admin/ManageContent';
-import Dashboard from '../pages/Dashboard/Seller/Dashboard';
-import ManageRequest from '../pages/Dashboard/Seller/ManageRequest';
-import AddBlog from '../pages/Dashboard/Seller/AddBlog';
-import ManageBlog from '../pages/Dashboard/Seller/ManageBlog';
+import Dashboard from '../pages/Dashboard/Volunteer/Dashboard';
+import ManageRequest from '../pages/Dashboard/Volunteer/ManageRequest';
+import AddBlog from '../pages/Dashboard/Volunteer/AddBlog';
+import ManageBlog from '../pages/Dashboard/Volunteer/ManageBlog';
+import BlogDetails from '../components/Blog/BlogDetails';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,14 @@ export const router = createBrowserRouter([
       {
         path: '/blog',
         Component: Blog,
+      },
+      {
+        path: '/blog-details/:id',
+        element: (
+          <PrivateRoute>
+            <BlogDetails></BlogDetails>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/search',
@@ -123,7 +132,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'manage-manage',
+        path: 'content-manage',
         element: (
           <PrivateRoute>
             <ManageContent />
