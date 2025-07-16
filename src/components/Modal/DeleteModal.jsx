@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import useRole from '../../hooks/useRole';
 import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -81,6 +82,13 @@ const DeleteModal = ({ closeModal, isOpen, request, refetch }) => {
     if (data?.modifiedCount) {
       refetch();
       closeModal();
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: ' Successfully Updated',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -95,7 +103,7 @@ const DeleteModal = ({ closeModal, isOpen, request, refetch }) => {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="w-full max-w-3xl rounded-xl bg-white p-6 shadow-xl overflow-y-auto max-h-[90vh]">
           <Dialog.Title className="text-2xl font-semibold text-center text-[#eb2c29] mb-4">
-            Update Your Request Before Delete (Preview)
+            Update Your Request
           </Dialog.Title>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -230,7 +238,7 @@ const DeleteModal = ({ closeModal, isOpen, request, refetch }) => {
                 type="submit"
                 className="px-4 py-2 bg-[#eb2c29] text-white rounded hover:bg-[#d12522]"
               >
-                Submit & Console Log
+                Update
               </button>
             </div>
           </form>
