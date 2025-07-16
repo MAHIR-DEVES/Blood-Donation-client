@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import useRole from '../../../hooks/useRole';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
-const ManageContentRow = ({ item }) => {
+const ManageContentRow = ({ item, refetch }) => {
   // const [role] = useRole();
   const [isStatus, setIsStatus] = useState('');
   const queryClient = useQueryClient();
@@ -50,6 +50,30 @@ const ManageContentRow = ({ item }) => {
   const handelUpdate = e => {
     e.preventDefault();
     mutation.mutate(isStatus);
+  };
+
+  const handelDelete = async () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async result => {
+      if (result.isConfirmed) {
+        const { data } = await axiosSecure.delete(`/delete-blog/${item?._id}`);
+        if (data?.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success',
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -117,7 +141,10 @@ const ManageContentRow = ({ item }) => {
           <button className="text-red-600 hover:text-red-900">
             <FiEdit className="w-5 h-5" />
           </button>
-          <button className="text-gray-500 hover:text-gray-700">
+          <button
+            onClick={handelDelete}
+            className="text-gray-500 hover:text-gray-700"
+          >
             <FiTrash2 className="w-5 h-5" />
           </button>
         </div>

@@ -13,6 +13,7 @@ import {
 import { IoWater, IoTime, IoAlertCircle } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import LoadingSpinner from '../Shared/LoadingSpinner';
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,8 @@ const BlogDetails = () => {
   });
 
   const { title, thumbnail, blogDec, date, role } = data || {};
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="min-h-screen bg-white">

@@ -4,49 +4,17 @@ import ManageContentDataRow from '../../../components/Dashboard/TableRows/Manage
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
+import { useNavigate } from 'react-router';
 
 const ManageContent = () => {
-  // Sample content data
-  const contentItems = [
-    {
-      id: 1,
-      title: 'Homepage Banner',
-      type: 'Image',
-      lastUpdated: '2 hours ago',
-      status: 'Published',
-    },
-    {
-      id: 2,
-      title: 'Summer Collection Guide',
-      type: 'Article',
-      lastUpdated: '1 day ago',
-      status: 'Draft',
-    },
-    {
-      id: 3,
-      title: 'Product Care Instructions',
-      type: 'PDF',
-      lastUpdated: '3 days ago',
-      status: 'Published',
-    },
-    {
-      id: 4,
-      title: 'About Us Page',
-      type: 'Page',
-      lastUpdated: '1 week ago',
-      status: 'Published',
-    },
-    {
-      id: 5,
-      title: 'New Arrivals Section',
-      type: 'HTML',
-      lastUpdated: '2 weeks ago',
-      status: 'Archived',
-    },
-  ];
+  const navigate = useNavigate();
 
   const axiosSecure = useAxiosSecure();
-  const { data: contents, isLoading } = useQuery({
+  const {
+    data: contents,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['manage-contents'],
     queryFn: async () => {
       const { data } = await axiosSecure('/contents');
@@ -81,7 +49,10 @@ const ManageContent = () => {
           />
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
-          <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+          <button
+            onClick={() => navigate('/dashboard/add-blog')}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
             <FiPlus /> Add New
           </button>
           <button className="flex items-center gap-2 bg-white border border-red-600 text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg transition-colors">
@@ -140,6 +111,7 @@ const ManageContent = () => {
                 <ManageContentDataRow
                   key={item?._id}
                   item={item}
+                  refetch={refetch}
                 ></ManageContentDataRow>
               ))}
             </tbody>
