@@ -4,12 +4,17 @@ import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
 import MyRequestDataRow from '../../../components/Dashboard/TableRows/MyRequestDataRow';
+import { Link } from 'react-router';
 
 const MyRequest = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: requests, isLoading } = useQuery({
+  const {
+    data: requests,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['my-request', user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure(`/my-request/${user?.email}`);
@@ -26,7 +31,48 @@ const MyRequest = () => {
           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
               {requests.length === 0 ? (
-                <p>you not add any request </p>
+                <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+                  <div className="mb-6 p-6 bg-red-50 rounded-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-16 w-16 text-red-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    No Blood Requests Found
+                  </h3>
+                  <p className="text-gray-600 max-w-md mb-6">
+                    You haven't created any blood donation requests yet. When
+                    you do, they'll appear here.
+                  </p>
+                  <Link to={'/dashboard/create-request'}>
+                    <button className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-2"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Create Your First Request
+                    </button>
+                  </Link>
+                </div>
               ) : (
                 <table className="min-w-full leading-normal">
                   <thead>
@@ -78,7 +124,11 @@ const MyRequest = () => {
                   </thead>
                   <tbody>
                     {requests.map(request => (
-                      <MyRequestDataRow key={request._id} request={request} />
+                      <MyRequestDataRow
+                        key={request._id}
+                        request={request}
+                        refetch={refetch}
+                      />
                     ))}
                   </tbody>
                 </table>

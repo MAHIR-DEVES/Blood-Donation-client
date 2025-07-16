@@ -1,11 +1,45 @@
 import { useState } from 'react';
 import DeleteModal from '../../Modal/DeleteModal';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-const CustomerOrderDataRow = ({ request }) => {
-  const { requesterName, district, bloodGroup, donationDate, status, profile } =
-    request || {};
+import Swal from 'sweetalert2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+const CustomerOrderDataRow = ({ request, refetch }) => {
+  const {
+    _id,
+    requesterName,
+    district,
+    bloodGroup,
+    donationDate,
+    status,
+    profile,
+  } = request || {};
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
+  const axiosSecure = useAxiosSecure();
+
+  const handelDelete = async () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async result => {
+      if (result.isConfirmed) {
+        const { data } = await axiosSecure.delete(`/delete-request/${_id}`);
+        if (data?.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success',
+          });
+        }
+      }
+    });
+  };
 
   return (
     <tr>
@@ -41,15 +75,26 @@ const CustomerOrderDataRow = ({ request }) => {
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <div className="flex justify-end gap-3">
-          <button className="text-red-600 hover:text-red-900">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="text-red-600 hover:text-red-900"
+          >
             <FiEdit className="w-5 h-5" />
           </button>
-          <button className="text-gray-500 hover:text-gray-700">
+          <button
+            onClick={handelDelete}
+            className="text-gray-500 hover:text-gray-700"
+          >
             <FiTrash2 className="w-5 h-5" />
           </button>
         </div>
 
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
+        <DeleteModal
+          request={request}
+          isOpen={isOpen}
+          closeModal={closeModal}
+          refetch={refetch}
+        />
       </td>
     </tr>
   );
