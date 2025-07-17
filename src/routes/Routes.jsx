@@ -10,7 +10,6 @@ import Profile from '../pages/Dashboard/Common/Profile';
 import Statistics from '../pages/Dashboard/Common/Statistics';
 import MainLayout from '../layouts/MainLayout';
 
-import DonorDetails from '../pages/DonorDetails/DonorDetails';
 import Blog from '../pages/Blog/Blog';
 import SearchBlood from '../pages/SearchBlood/SearchBlood';
 import BloodRequest from '../pages/BloodRequest/BloodRequest';
@@ -24,6 +23,7 @@ import ManageRequest from '../pages/Dashboard/Volunteer/ManageRequest';
 import AddBlog from '../pages/Dashboard/Volunteer/AddBlog';
 import ManageBlog from '../pages/Dashboard/Volunteer/ManageBlog';
 import BlogDetails from '../components/Blog/BlogDetails';
+import Funding from '../pages/Funding/Funding';
 
 export const router = createBrowserRouter([
   {
@@ -35,10 +35,7 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Home />,
       },
-      {
-        path: '/plant/:id',
-        element: <DonorDetails />,
-      },
+
       {
         path: '/blog',
         Component: Blog,
@@ -56,6 +53,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <SearchBlood></SearchBlood>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/funding',
+        element: (
+          <PrivateRoute>
+            <Funding></Funding>
           </PrivateRoute>
         ),
       },

@@ -153,8 +153,12 @@ const AdminStatistics = () => {
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Location
                   </th>
+
                   <th className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Blood Group
+                  </th>
+                  <th className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    status
                   </th>
                 </tr>
               </thead>
@@ -182,6 +186,9 @@ const AdminStatistics = () => {
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                       {request?.bloodGroup}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      {request?.status}
                     </td>
                   </tr>
                 ))}

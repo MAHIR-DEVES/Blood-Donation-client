@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import {
   FaUser,
   FaHospital,
@@ -9,15 +10,18 @@ import {
   FaCalendarAlt,
   FaClock,
   FaTint,
-  FaPhone,
   FaEnvelope,
 } from 'react-icons/fa';
 import LoadingSpinner from '../../components/Shared/LoadingSpinner';
+import DonateBlood from '../Modal/DonateBlood';
 
 const BloodRequestDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+
+  let [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['single-request', id],
@@ -266,14 +270,27 @@ const BloodRequestDetails = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="flex-1 py-3 px-6 bg-[#eb2c29] hover:bg-[#d12522] text-white font-medium rounded-lg shadow-sm transition-colors">
-                Contact Requester
+              <button
+                onClick={() => setIsOpen(true)}
+                className="flex-1 py-3 px-6 bg-[#eb2c29] hover:bg-[#d12522] text-white font-medium rounded-lg shadow-sm transition-colors"
+              >
+                Donate Blood
+                <DonateBlood
+                  closeModal={closeModal}
+                  setIsOpen={setIsOpen}
+                  isOpen={isOpen}
+                  requesterEmail={requesterEmail}
+                  _id={_id}
+                ></DonateBlood>
               </button>
               <button
-                onClick={() => navigate('/search')}
+                onClick={() => navigate(-1)}
                 className="flex-1 py-3 px-6 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg shadow-sm transition-colors"
               >
-                View Donor List
+                <span className="flex justify-center items-center font-bold gap-2">
+                  <IoMdArrowRoundBack size={20} />
+                  Back
+                </span>
               </button>
             </div>
           </div>

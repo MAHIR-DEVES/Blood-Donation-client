@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  FaUser,
-  FaHospital,
-  FaMapMarkerAlt,
-  FaCalendarAlt,
-  FaClock,
-  FaTint,
-} from 'react-icons/fa';
+import { FaUser, FaTint } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 
 const BloodRequestCard = ({ request }) => {
@@ -15,14 +8,7 @@ const BloodRequestCard = ({ request }) => {
     requesterName,
     requesterEmail,
     recipientName,
-    district,
-    upazila,
-    hospitalName,
-    address,
     bloodGroup,
-    donationDate,
-    donationTime,
-    message,
     status,
     profile,
     role,
@@ -137,9 +123,6 @@ const BloodRequestCard = ({ request }) => {
             className="flex-1 py-2 px-4 bg-[#eb2c29] hover:bg-[#d12522] text-white rounded-lg text-sm font-medium transition-colors"
           >
             View Details
-          </button>
-          <button className="flex-1 py-2 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-            Contact
           </button>
         </div>
       </div>

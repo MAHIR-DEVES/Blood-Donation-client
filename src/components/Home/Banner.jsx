@@ -29,7 +29,7 @@ const Banner = () => {
             difference today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 ">
-            {role === 'donor' || role === 'admin' || role === 'volente' ? (
+            {role === 'donor' || role === 'admin' || role === 'volunteer' ? (
               <button className="bg-white text-red-700 font-bold py-3 px-8 rounded-lg hover:bg-red-50 transition duration-300 text-lg">
                 You Already joined Our Program
               </button>

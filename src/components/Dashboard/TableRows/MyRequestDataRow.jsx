@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import DeleteModal from '../../Modal/DeleteModal';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import UpdateRequest from '../../Modal/UpdateRequest';
 const CustomerOrderDataRow = ({ request, refetch }) => {
   const {
     _id,
@@ -89,7 +89,7 @@ const CustomerOrderDataRow = ({ request, refetch }) => {
           </button>
         </div>
 
-        <DeleteModal
+        <UpdateRequest
           request={request}
           isOpen={isOpen}
           closeModal={closeModal}

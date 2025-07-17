@@ -1,4 +1,4 @@
-import PlantDataRow from '../../../components/Dashboard/TableRows/PlantDataRow';
+import VolunteerBlogRow from '../../../components/Dashboard/TableRows/VolunteerBlogRow';
 
 const ManageBlog = () => {
   return (
@@ -56,7 +56,7 @@ const ManageBlog = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <PlantDataRow />
+                  <VolunteerBlogRow></VolunteerBlogRow>
                 </tbody>
               </table>
             </div>

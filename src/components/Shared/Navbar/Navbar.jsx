@@ -89,6 +89,7 @@ const Navbar = () => {
           Blood Request
         </NavLink>
       </li>
+
       <li>
         <NavLink
           to="/search"
@@ -103,6 +104,22 @@ const Navbar = () => {
           }
         >
           Search <IoSearch />
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/funding"
+          className={({ isActive }) =>
+            `px-4 py-2 relative transition-colors flex items-center gap-2 ${
+              isActive ? 'text-white' : 'text-red-100 hover:text-white'
+            } ${
+              isActive
+                ? 'after:content-[""] after:absolute after:bottom-0 after:left-1/4 after:w-1/2 after:h-0.5 after:bg-white'
+                : ''
+            }`
+          }
+        >
+          Funding
         </NavLink>
       </li>
     </>

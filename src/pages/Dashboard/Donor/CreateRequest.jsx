@@ -64,7 +64,7 @@ const CreateRequest = () => {
 
   if (isLoading || isRoleLoading) return <LoadingSpinner />;
 
-  if (userData?.status === 'blocked') {
+  if (userData?.status === 'block') {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-white rounded-xl shadow-sm p-8 max-w-md mx-auto">
         <div className="text-center">

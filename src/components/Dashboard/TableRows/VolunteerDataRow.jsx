@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import DeleteModal from '../../Modal/DeleteModal';
 import useRole from '../../../hooks/useRole';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import {
@@ -52,9 +51,6 @@ const VolunteerDataRow = ({ request }) => {
     e.preventDefault();
     mutation.mutate(isStatus);
   };
-
-  let [isOpen, setIsOpen] = useState(false);
-  const closeModal = () => setIsOpen(false);
 
   if (isRoleLoading) return <LoadingSpinner></LoadingSpinner>;
 
@@ -130,7 +126,6 @@ const VolunteerDataRow = ({ request }) => {
             <span className="relative">Update</span>
           </button>
         </div>
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
       </td>
     </tr>
   );

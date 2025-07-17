@@ -20,7 +20,7 @@ const initialFormData = {
   message: '',
 };
 
-const DeleteModal = ({ closeModal, isOpen, request, refetch }) => {
+const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const [formData, setFormData] = useState(initialFormData);
   const [districts, setDistricts] = useState([]);
@@ -248,4 +248,4 @@ const DeleteModal = ({ closeModal, isOpen, request, refetch }) => {
   );
 };
 
-export default DeleteModal;
+export default UpdateRequest;

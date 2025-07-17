@@ -35,7 +35,7 @@ const Profile = () => {
     bloodGroup,
     district,
     upazila,
-    role: userRole,
+
     status,
   } = userData || {};
 
