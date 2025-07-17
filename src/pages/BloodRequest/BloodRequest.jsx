@@ -22,7 +22,7 @@ const BloodRequest = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
-      {requests.map(request => (
+      {requests?.result.map(request => (
         <BloodRequestCard key={request._id} request={request} />
       ))}
     </div>

@@ -159,7 +159,7 @@ const VolunteerStatistics = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {requests?.map(request => (
+                {requests?.result?.map(request => (
                   <tr key={request}>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <div className="flex items-center">

@@ -94,7 +94,7 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="bg-lime-500 w-full rounded-md py-3 text-white"
+              className="bg-red-600 w-full rounded-md py-3 text-white"
             >
               {loading ? (
                 <TbFidgetSpinner className="animate-spin m-auto" />
@@ -104,7 +104,7 @@ const Login = () => {
             </button>
           </div>
         </form>
-        <div className="space-y-1">
+        {/* <div className="space-y-1">
           <button className="text-xs hover:underline hover:text-lime-500 text-gray-400">
             Forgot password?
           </button>
@@ -123,7 +123,7 @@ const Login = () => {
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
-        </div>
+        </div> */}
         <p className="px-6 text-sm text-center text-gray-400">
           Don&apos;t have an account yet?{' '}
           <Link

@@ -37,7 +37,7 @@ const DonateBlood = ({ closeModal, isOpen, requesterEmail, _id }) => {
 
     const { data: status } = await axios.patch(
       `${import.meta.env.VITE_API_URL}/update-request-status/${_id}`,
-      { inprogress: 'inprogress' }
+      { inprogress: 'Inprogress' }
     );
 
     if (status?.modifiedCount) {
