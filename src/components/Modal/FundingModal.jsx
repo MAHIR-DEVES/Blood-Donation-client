@@ -10,7 +10,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_KEY);
 const FundingModal = ({ closeModal, isOpen, refetch }) => {
   const handelCloseModel = () => {
     closeModal();
-    refetch();
   };
   return (
     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
@@ -24,7 +23,7 @@ const FundingModal = ({ closeModal, isOpen, refetch }) => {
           {/* Your form content here */}
           <div className="">
             <Elements stripe={stripePromise}>
-              <CheckoutForm />
+              <CheckoutForm refetch={refetch} closeModal={closeModal} />
             </Elements>
           </div>
 

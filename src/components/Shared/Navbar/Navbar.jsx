@@ -26,19 +26,6 @@ const Navbar = () => {
     },
   });
 
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     const { data } = await axios.get(
-  //       `${import.meta.env.VITE_API_URL}/user/${user?.email}`
-  //     );
-  //     console.log(data);
-  //   };
-
-  //   if (user?.email) {
-  //     getUser();
-  //   }
-  // }, [user?.email]);
-
   const links = (
     <>
       <li>

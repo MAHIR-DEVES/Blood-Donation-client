@@ -50,10 +50,11 @@ const DonateBlood = ({ closeModal, isOpen, requesterEmail, _id }) => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Your info has been send',
+          title: 'Your info has been sent',
           showConfirmButton: false,
           timer: 1500,
         });
+        closeModal();
       }
     }
   };
@@ -65,6 +66,9 @@ const DonateBlood = ({ closeModal, isOpen, requesterEmail, _id }) => {
       className="relative z-50"
       onClose={closeModal}
     >
+      {/* Gradient Backdrop */}
+      <div className="fixed inset-0 bg-gradient-to-br from-red-500/20 via-pink-500/10 to-transparent backdrop-blur-sm" />
+
       <div className="fixed inset-0 z-10 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white shadow-xl transition-all">
           {/* Header */}
@@ -157,6 +161,7 @@ const DonateBlood = ({ closeModal, isOpen, requesterEmail, _id }) => {
                     name="number"
                     type="tel"
                     placeholder="Enter your phone number"
+                    required
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                   />
                 </div>

@@ -1,4 +1,6 @@
 import Banner from '../../components/Home/Banner';
+import ContactSection from '../../components/Home/ContactSection';
+import FeaturedSection from '../../components/Home/FeaturedSection';
 // import Donor from '../../components/Home/Donor';
 
 const Home = () => {
@@ -110,6 +112,10 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {/* Featured Section */}
+      <FeaturedSection></FeaturedSection>
+      {/*contact section  */}
+      <ContactSection></ContactSection>
     </div>
   );
 };
