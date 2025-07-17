@@ -7,7 +7,11 @@ import CheckoutForm from '../Form/CheckoutForm';
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_KEY);
 
-const FundingModal = ({ closeModal, isOpen }) => {
+const FundingModal = ({ closeModal, isOpen, refetch }) => {
+  const handelCloseModel = () => {
+    closeModal();
+    refetch();
+  };
   return (
     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
       <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
@@ -26,7 +30,7 @@ const FundingModal = ({ closeModal, isOpen }) => {
 
           <div className="mt-4 flex justify-end gap-2">
             <button
-              onClick={closeModal}
+              onClick={handelCloseModel}
               className="px-4 py-2 text-sm font-medium text-gray-700"
             >
               Cancel

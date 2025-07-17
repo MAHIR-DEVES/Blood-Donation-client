@@ -45,7 +45,7 @@ const AdminStatistics = () => {
   const stats = [
     {
       title: 'Total Revenue',
-      value: '$53,458',
+      value: `$${statsData.totalAmount}`,
       icon: <FaDollarSign className="w-5 h-5" />,
       change: '+12%',
       trend: 'up',

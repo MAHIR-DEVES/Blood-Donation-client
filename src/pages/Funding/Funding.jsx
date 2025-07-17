@@ -2,50 +2,33 @@ import React from 'react';
 import { DollarOutlined, PlusOutlined } from '@ant-design/icons';
 import FundingModal from '../../components/Modal/FundingModal';
 import { useState } from 'react';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../components/Shared/LoadingSpinner';
 
 const Funding = () => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
-  // Static data for demonstration
-  const fundingData = [
-    {
-      id: 1,
-      userName: 'John Doe',
-      amount: 100.5,
-      date: '2023-07-15',
-      transactionId: 'txn_123456789',
-    },
-    {
-      id: 2,
-      userName: 'Jane Smith',
-      amount: 250.0,
-      date: '2023-07-14',
-      transactionId: 'txn_987654321',
-    },
-    {
-      id: 3,
-      userName: 'Robert Johnson',
-      amount: 75.25,
-      date: '2023-07-13',
-      transactionId: 'txn_456789123',
-    },
-    {
-      id: 4,
-      userName: 'Emily Davis',
-      amount: 500.0,
-      date: '2023-07-12',
-      transactionId: 'txn_321654987',
-    },
-    {
-      id: 5,
-      userName: 'Michael Wilson',
-      amount: 150.75,
-      date: '2023-07-11',
-      transactionId: 'txn_789123456',
-    },
-  ];
+  const axiosSecure = useAxiosSecure();
 
-  const totalFunds = fundingData.reduce((sum, item) => sum + item.amount, 0);
+  const [page, setPage] = useState(1);
+  const limit = 6;
+
+  const {
+    data: fundingDetails,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['funding-details', page],
+    queryFn: async () => {
+      const { data } = await axiosSecure(
+        `/funding-details?page=${page}&limit=${limit}`
+      );
+      return data;
+    },
+  });
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -73,13 +56,13 @@ const Funding = () => {
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <h3 className="text-gray-500 text-sm font-medium">Total Funds</h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            ${totalFunds.toFixed(2)}
+            $ {fundingDetails?.totalAmount}
           </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <h3 className="text-gray-500 text-sm font-medium">Total Donations</h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            {fundingData.length}
+            {fundingDetails?.result.length}
           </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
@@ -87,17 +70,31 @@ const Funding = () => {
             Average Donation
           </h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            ${(totalFunds / fundingData.length).toFixed(2)}
+            $
+            {fundingDetails && fundingDetails.result?.length > 0
+              ? (
+                  fundingDetails.totalAmount / fundingDetails.result.length
+                ).toFixed(2)
+              : '0.00'}
           </p>
         </div>
       </div>
 
-      {/* Funding Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Funding Table with Fixed Pagination */}
+      <div
+        className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col"
+        style={{ minHeight: '500px' }}
+      >
+        <div className="overflow-x-auto flex-grow">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Profile
+                </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -125,10 +122,17 @@ const Funding = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {fundingData.map(fund => (
+              {fundingDetails?.result?.map(fund => (
                 <tr key={fund.id}>
+                  <td className="px-6 py-4 whitespace-nowrap ">
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src={fund?.profile}
+                      alt=""
+                    />
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {fund.userName}
+                    {fund?.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <span className="flex items-center">
@@ -148,32 +152,42 @@ const Funding = () => {
           </table>
         </div>
 
-        {/* Pagination */}
-        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-          <div className="text-sm text-gray-500">
-            Showing <span className="font-medium">1</span> to{' '}
-            <span className="font-medium">5</span> of{' '}
-            <span className="font-medium">5</span> donations
-          </div>
-          <div className="flex space-x-2">
-            <button className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+        {/* Pagination - Fixed at the bottom */}
+        <div className="px-6 py-4 border-t border-gray-200">
+          <div className="flex justify-end space-x-2">
+            <button
+              onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            >
               Previous
             </button>
             <button className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-              1
+              {page}
             </button>
-            <button className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button
+              onClick={() =>
+                setPage(prev =>
+                  fundingDetails && page * limit < fundingDetails.total
+                    ? prev + 1
+                    : prev
+                )
+              }
+              disabled={fundingDetails && page * limit >= fundingDetails.total}
+              className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            >
               Next
             </button>
           </div>
         </div>
       </div>
 
-      {/* Donation Modal (Visual Only) */}
+      {/* Donation Modal */}
       <FundingModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         closeModal={closeModal}
+        refetch={refetch}
       ></FundingModal>
     </div>
   );

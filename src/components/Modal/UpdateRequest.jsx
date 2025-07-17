@@ -1,8 +1,5 @@
 import { Dialog } from '@headlessui/react';
 import { useEffect, useState } from 'react';
-import useAuth from '../../hooks/useAuth';
-import useRole from '../../hooks/useRole';
-import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
@@ -38,7 +35,8 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
         hospitalName: request.hospitalName || '',
         address: request.address || '',
         bloodGroup: request.bloodGroup || '',
-        donationDate: new Date().toISOString().split('T')[0] || '',
+        donationDate:
+          request.donationDate || new Date().toISOString().split('T')[0],
         donationTime: request.donationTime || '',
         message: request.message || '',
       });
@@ -85,7 +83,7 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: ' Successfully Updated',
+        title: 'Request Successfully Updated',
         showConfirmButton: false,
         timer: 1500,
       });
@@ -96,36 +94,49 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
     <Dialog
       open={isOpen}
       as="div"
-      className="relative z-10"
+      className="relative z-50"
       onClose={closeModal}
     >
-      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-3xl rounded-xl bg-white p-6 shadow-xl overflow-y-auto max-h-[90vh]">
-          <Dialog.Title className="text-2xl font-semibold text-center text-[#eb2c29] mb-4">
-            Update Your Request
-          </Dialog.Title>
+        <Dialog.Panel className="w-full max-w-2xl rounded-xl bg-white shadow-xl overflow-hidden">
+          <div className="bg-[#eb2c29] p-4">
+            <Dialog.Title className="text-xl font-semibold text-center text-white">
+              Update Blood Donation Request
+            </Dialog.Title>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Patient Name */}
               <div>
-                <label className="block text-sm">Patient Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Patient Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   name="recipientName"
                   value={formData.recipientName}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 />
               </div>
 
+              {/* Blood Group */}
               <div>
-                <label className="block text-sm">Blood Group</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Blood Group <span className="text-red-500">*</span>
+                </label>
                 <select
                   name="bloodGroup"
                   value={formData.bloodGroup}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 >
                   <option value="">Select blood group</option>
                   {bloodGroups.map(group => (
@@ -136,13 +147,17 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
                 </select>
               </div>
 
+              {/* District */}
               <div>
-                <label className="block text-sm">District</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  District <span className="text-red-500">*</span>
+                </label>
                 <select
                   name="district"
                   value={formData.district}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 >
                   <option value="">Select district</option>
                   {districts.map(d => (
@@ -153,13 +168,18 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
                 </select>
               </div>
 
+              {/* Upazila */}
               <div>
-                <label className="block text-sm">Upazila</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Upazila <span className="text-red-500">*</span>
+                </label>
                 <select
                   name="upazila"
                   value={formData.upazila}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  disabled={!formData.district}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent disabled:bg-gray-100"
                 >
                   <option value="">Select upazila</option>
                   {filteredUpazilas.map(u => (
@@ -170,75 +190,97 @@ const UpdateRequest = ({ closeModal, isOpen, request, refetch }) => {
                 </select>
               </div>
 
+              {/* Hospital Name */}
               <div className="md:col-span-2">
-                <label className="block text-sm">Hospital Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Hospital Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   name="hospitalName"
                   value={formData.hospitalName}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 />
               </div>
 
+              {/* Full Address */}
               <div className="md:col-span-2">
-                <label className="block text-sm">Full Address</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Address <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 />
               </div>
 
+              {/* Donation Date */}
               <div>
-                <label className="block text-sm">Donation Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Donation Date <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="date"
                   name="donationDate"
                   value={formData.donationDate}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 />
               </div>
 
+              {/* Donation Time */}
               <div>
-                <label className="block text-sm">Donation Time</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Donation Time <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="time"
                   name="donationTime"
                   value={formData.donationTime}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
                 />
               </div>
             </div>
 
+            {/* Additional Message */}
             <div>
-              <label className="block text-sm">Additional Message</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Additional Message
+              </label>
               <textarea
                 name="message"
                 rows={4}
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:border-transparent"
+                placeholder="Any special instructions or details..."
               />
             </div>
 
-            <div className="pt-4 flex justify-between">
+            {/* Action Buttons */}
+            <div className="pt-4 flex justify-end space-x-3">
               <button
                 type="button"
                 onClick={closeModal}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-[#eb2c29] text-white rounded hover:bg-[#d12522]"
+                className="px-4 py-2 text-white bg-[#eb2c29] rounded-md hover:bg-[#d12522] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#eb2c29] focus:ring-opacity-50"
               >
-                Update
+                Update Request
               </button>
             </div>
           </form>

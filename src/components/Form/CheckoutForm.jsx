@@ -86,6 +86,7 @@ const CheckoutForm = () => {
         setCardError(result?.error?.message);
         return;
       }
+
       if (result?.paymentIntent?.status === 'succeeded') {
         // save payment info
         const paymentInfo = {
@@ -94,6 +95,9 @@ const CheckoutForm = () => {
           status: userData?.status,
           district: userData?.district,
           role: userData?.role,
+          name: userData?.name,
+          amount: parseFloat(amount),
+          date: new Date().toISOString().split('T')[0],
         };
 
         try {
