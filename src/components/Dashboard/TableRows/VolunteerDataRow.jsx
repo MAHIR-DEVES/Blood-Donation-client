@@ -8,12 +8,12 @@ import {
 } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const VolunteerDataRow = ({ request }) => {
   const [role, isRoleLoading] = useRole();
   const [isStatus, setIsStatus] = useState('');
   const axiosSecure = useAxiosSecure();
-
   const queryClient = useQueryClient();
   const {
     requesterName,
@@ -45,7 +45,46 @@ const VolunteerDataRow = ({ request }) => {
     },
   });
 
-  console.log(mutation);
+  const mutation2 = useMutation({
+    mutationFn: async isStatus => {
+      const { data } = await axiosSecure.delete(`/delete-request/${_id}`, {
+        isStatus,
+      });
+      return data;
+    },
+    onSuccess: data => {
+      // refetch();
+      queryClient.invalidateQueries(['all-request']);
+      toast.success('Role successfully delete ');
+      console.log(data);
+    },
+
+    onError: error => {
+      console.log(error);
+    },
+  });
+
+  const handelDelete = e => {
+    e.preventDefault();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your file has been deleted.',
+          icon: 'success',
+        });
+        mutation2.mutate();
+      }
+    });
+  };
 
   const handelUpdate = e => {
     e.preventDefault();
@@ -100,20 +139,6 @@ const VolunteerDataRow = ({ request }) => {
             <option value="Pending">Pending</option>
             <option value="Complete">Complete</option>
           </select>
-          {role === 'admin' ? (
-            <button
-              onClick={() => setIsOpen(true)}
-              className="relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-            >
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-              ></span>
-              <span className="relative">Cancel</span>
-            </button>
-          ) : (
-            ''
-          )}
           <button
             onClick={handelUpdate}
             type="submit"
@@ -125,6 +150,19 @@ const VolunteerDataRow = ({ request }) => {
             ></span>
             <span className="relative">Update</span>
           </button>
+          {role === 'admin' ? (
+            <button className="relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
+              ></span>
+              <span onClick={handelDelete} className="relative">
+                Delete
+              </span>
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       </td>
     </tr>
