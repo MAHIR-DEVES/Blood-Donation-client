@@ -3,9 +3,11 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import axios from 'axios';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const DonorStatistics = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const { data, isLoading } = useQuery({
     queryKey: ['user', user?.email],
     queryFn: async () => {
@@ -15,39 +17,16 @@ const DonorStatistics = () => {
       return data;
     },
   });
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
-  // Static data for demonstration
-  // const user = {
-  //   displayName: 'John Doe',
-  //   bloodType: 'A+',
-  //   totalDonations: 5,
-  //   lastDonation: '2 months ago',
-  // };
+  const { data: requests, isLoading: userDataLoading } = useQuery({
+    queryKey: ['my-request', user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure(`/my-request/${user?.email}`);
+      return data;
+    },
+  });
 
-  const requests = [
-    {
-      id: 'REQ5892',
-      date: '2023-10-15',
-      bloodType: 'A+',
-      status: 'completed',
-      hospital: 'City General Hospital',
-    },
-    {
-      id: 'REQ4721',
-      date: '2023-09-28',
-      bloodType: 'A+',
-      status: 'completed',
-      hospital: 'Central Blood Bank',
-    },
-    {
-      id: 'REQ3560',
-      date: '2023-08-10',
-      bloodType: 'A+',
-      status: 'completed',
-      hospital: 'Red Crescent Center',
-    },
-  ];
+  if (isLoading || userDataLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="min-h-screen bg-gray-50 ">
@@ -218,16 +197,16 @@ const DonorStatistics = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Request ID
+                    image
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Blood Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Hospital
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
@@ -238,19 +217,24 @@ const DonorStatistics = () => {
                 {requests.map(request => (
                   <tr key={request.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      #{request.id}
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={request?.profile}
+                        alt=""
+                      />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(request.date).toLocaleDateString()}
+                      {request.requesterName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(request.donationDate).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <span className="px-2 py-1 rounded-full bg-[#fff0f0] text-[#eb2c29] font-medium">
-                        {request.bloodType}
+                        {request.bloodGroup}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {request.hospital}
-                    </td>
+
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <span className="px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">
                         Completed

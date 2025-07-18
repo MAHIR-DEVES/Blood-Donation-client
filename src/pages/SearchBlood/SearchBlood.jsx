@@ -1,41 +1,84 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../components/Shared/Button/Button';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 import DonorCard from '../../components/Dashboard/Donors/DonorCard';
 import LoadingSpinner from '../../components/Shared/LoadingSpinner';
 
 const SearchBlood = () => {
   const [bloodGroup, setBloodGroup] = useState('');
-  const [location, setLocation] = useState('');
+  const [district, setDistrict] = useState('');
+  const [upazila, setUpazila] = useState('');
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
+  const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [searchParams, setSearchParams] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const axiosSecure = useAxiosSecure();
 
+  // Load districts & upazilas from public folder
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const res1 = await fetch('/districts.json');
+        const data1 = await res1.json();
+        setDistricts(data1);
+
+        const res2 = await fetch('/upazilas.json');
+        const data2 = await res2.json();
+        setUpazilas(data2);
+      } catch (error) {
+        console.error('Failed to fetch location data:', error);
+      }
+    };
+    loadData();
+  }, []);
+
+  // Filter upazilas based on district
+  useEffect(() => {
+    if (district) {
+      const filtered = upazilas.filter(u => u.district_id === district);
+      setFilteredUpazilas(filtered);
+      setUpazila('');
+    }
+  }, [district, upazilas]);
+
   const handelSearch = e => {
     e.preventDefault();
-    setSearchParams({ bloodGroup, location });
+    setHasSearched(true);
+
+    const districtName = districts.find(d => d.id === district)?.name || '';
+
+    const searchData = {
+      bloodGroup,
+      district: districtName,
+      upazila,
+    };
+
+    setSearchParams(searchData);
   };
 
-  const { data, isLoading } = useQuery({
+  const { data: donors, isLoading } = useQuery({
     queryKey: ['donors', searchParams],
+
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/donors`, {
+      const { data } = await axiosSecure.get('/donors', {
         params: {
           bloodGroup: searchParams.bloodGroup,
-          location: searchParams.location,
+          district: searchParams.district,
+          upazila: searchParams.upazila,
         },
       });
       return data;
     },
-    enabled: !!searchParams,
+    enabled: !!searchParams, //
   });
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <div className="bg-[#eb2c29] text-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
@@ -48,15 +91,16 @@ const SearchBlood = () => {
         </div>
       </div>
 
-      {/* Search Form */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-10">
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
           <div className="p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Search Blood Availability
             </h2>
+
             <form onSubmit={handelSearch} className="space-y-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                {/* Blood Group */}
                 <div>
                   <label
                     htmlFor="blood-type"
@@ -68,201 +112,106 @@ const SearchBlood = () => {
                     value={bloodGroup}
                     onChange={e => setBloodGroup(e.target.value)}
                     id="blood-type"
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#eb2c29] focus:border-[#eb2c29] sm:text-sm rounded-md border"
+                    className="mt-1 block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                    required
                   >
-                    <option>Select Blood Type</option>
+                    <option value="">Select Blood Type</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
                     <option value="B+">B+</option>
                     <option value="B-">B-</option>
                     <option value="AB+">AB+</option>
-                    <option value="AB">AB-</option>
+                    <option value="AB-">AB-</option>
                     <option value="O+">O+</option>
                     <option value="O-">O-</option>
                   </select>
                 </div>
+
+                {/* District */}
                 <div>
-                  <label
-                    htmlFor="location"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Location
+                  <label className="block text-sm font-medium text-gray-700">
+                    District
                   </label>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={location}
-                    onChange={e => setLocation(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#eb2c29] focus:border-[#eb2c29] sm:text-sm"
-                    placeholder="Deistic or Upazila"
-                  />
+                  <select
+                    value={district}
+                    onChange={e => setDistrict(e.target.value)}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                    required
+                  >
+                    <option value="">Select District</option>
+                    {districts.map(d => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Upazila */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Upazila
+                  </label>
+                  <select
+                    value={upazila}
+                    onChange={e => setUpazila(e.target.value)}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                    required
+                  >
+                    <option value="">Select Upazila</option>
+                    {filteredUpazilas.map(u => (
+                      <option key={u.id} value={u.name}>
+                        {u.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
+
+              {/* Submit Button */}
               <div>
-                <Button
-                  onClick={handelSearch}
-                  label={'Search Availability'}
-                ></Button>
+                <Button type="submit" label="Search Availability" />
               </div>
             </form>
           </div>
         </div>
       </div>
-      {/* donors cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {data?.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-600">
-              No donors found matching your criteria.
-            </p>
-            <p className="text-gray-500 mt-2">
-              Please try different search filters.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {data?.map(donor => (
-              <DonorCard donor={donor} key={donor._id} />
+      <div className="w-9/12 mx-auto">
+        {donors?.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
+            {donors.map(donor => (
+              <DonorCard key={donor.id} donor={donor} />
             ))}
           </div>
-        )}
-      </div>
-
-      {/* Information Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Why Blood Donation Matters
-          </h2>
-          <p className="mt-4 max-w-2xl text-xl text-gray-600 mx-auto">
-            Every 2 seconds someone in the world needs blood. Your donation can
-            save up to 3 lives.
-          </p>
-        </div>
-
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="pt-6">
-            <div className="flow-root bg-white rounded-lg px-6 pb-8 h-full shadow">
-              <div className="-mt-6">
-                <div>
-                  <span className="inline-flex items-center justify-center p-3 bg-[#eb2c29] rounded-md shadow-lg">
-                    <svg
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
-                  Quick Response
-                </h3>
-                <p className="mt-5 text-base text-gray-600">
-                  Our network connects you with donors quickly when emergencies
-                  arise, ensuring timely access to blood.
-                </p>
+        ) : hasSearched ? (
+          <div className="flex flex-col items-center justify-center min-h-[50vh] py-12 px-4 text-center">
+            <div className="flex flex-col items-center justify-center min-h-[50vh] py-12 px-4 text-center">
+              <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                No Donors Found
+              </h3>
+              <p className="text-gray-500 max-w-md mb-6">
+                We couldn't find any donors matching your criteria. Please try
+                adjusting your search or check back later.
+              </p>
             </div>
           </div>
-
-          <div className="pt-6">
-            <div className="flow-root bg-white rounded-lg px-6 pb-8 h-full shadow">
-              <div className="-mt-6">
-                <div>
-                  <span className="inline-flex items-center justify-center p-3 bg-[#eb2c29] rounded-md shadow-lg">
-                    <svg
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
-                  Large Donor Network
-                </h3>
-                <p className="mt-5 text-base text-gray-600">
-                  Thousands of registered donors across the country ready to
-                  help when their blood type is needed.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-6">
-            <div className="flow-root bg-white rounded-lg px-6 pb-8 h-full shadow">
-              <div className="-mt-6">
-                <div>
-                  <span className="inline-flex items-center justify-center p-3 bg-[#eb2c29] rounded-md shadow-lg">
-                    <svg
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
-                  Verified Donors
-                </h3>
-                <p className="mt-5 text-base text-gray-600">
-                  All donors are health-screened and verified to ensure the
-                  safety and quality of donated blood.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Call to Action */}
-      <div className="bg-[#eb2c29]">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <span className="block">Ready to make a difference?</span>
-            <span className="block">Register as a donor today.</span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-[#eb2c29] bg-white hover:bg-gray-50"
-              >
-                Become a Donor
-              </a>
-            </div>
-            <div className="ml-3 inline-flex rounded-md shadow">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#d12522] hover:bg-[#b8201e]"
-              >
-                Learn More
-              </a>
-            </div>
-          </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );
