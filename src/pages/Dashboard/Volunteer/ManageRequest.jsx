@@ -18,7 +18,7 @@ const ManageRequest = () => {
       );
       return data;
     },
-    keepPreviousData: true, // smooth pagination
+    keepPreviousData: true,
   });
 
   const requests = requestsData?.result || [];
