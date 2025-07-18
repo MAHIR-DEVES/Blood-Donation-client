@@ -6,116 +6,204 @@ import {
   FaUsers,
   FaAmbulance,
   FaBell,
+  FaMapMarkerAlt,
+  FaHeartbeat,
 } from 'react-icons/fa';
 
 const FeaturedSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-red-50 to-white">
+    <section className="py-20 bg-gradient-to-b from-white to-red-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-red-700 mb-4">
-            Why Choose <span className="text-red-800">BloodConnect</span>?
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            Why We're Different
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            The <span className="text-red-600">Fastest, Safest</span> Way to
+            Connect Blood
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join our life-saving community where every donation makes a
-            difference. We've facilitated over 50,000 successful blood donations
-            nationwide.
+            Our verified network has helped save over 120,000 lives across
+            Bangladesh through immediate donor connections.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-red-600">
-            <div className="flex items-center mb-4">
-              <div className="bg-red-100 p-3 rounded-full mr-4">
-                <FaShieldAlt className="text-red-600 text-2xl" />
+        {/* Main Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
+          {/* Feature 1 - Verified Donors */}
+          <div className="bg-white p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition-all duration-300">
+            <div className="flex items-start mb-6">
+              <div className="bg-red-100 p-3 rounded-xl mr-5">
+                <FaShieldAlt className="text-red-600 text-3xl" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Verified Donor Network
-              </h3>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Verified Donors
+                </h3>
+                <p className="text-gray-600">
+                  Every donor completes health screening and ID verification
+                  before joining our network.
+                </p>
+              </div>
             </div>
-            <p className="text-gray-600">
-              Every donor undergoes thorough health screening and verification
-              to ensure the safest possible blood supply for recipients.
-            </p>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                alt="Verified donor"
-                className="w-full h-48 object-cover rounded-lg"
-              />
+            <div className="bg-red-50 rounded-xl p-4">
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <svg
+                    className="h-5 w-5 text-red-500 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">Health history review</span>
+                </li>
+                <li className="flex items-center">
+                  <svg
+                    className="h-5 w-5 text-red-500 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">ID verification</span>
+                </li>
+                <li className="flex items-center">
+                  <svg
+                    className="h-5 w-5 text-red-500 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">Regular health updates</span>
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Feature 2 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-red-600">
-            <div className="flex items-center mb-4">
-              <div className="bg-red-100 p-3 rounded-full mr-4">
-                <FaClock className="text-red-600 text-2xl" />
+          {/* Feature 2 - Fast Response */}
+          <div className="bg-white p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition-all duration-300">
+            <div className="flex items-start mb-6">
+              <div className="bg-red-100 p-3 rounded-xl mr-5">
+                <FaClock className="text-red-600 text-3xl" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Rapid Response System
-              </h3>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Lightning Fast
+                </h3>
+                <p className="text-gray-600">
+                  Average 12-minute response time when you need blood urgently.
+                </p>
+              </div>
             </div>
-            <p className="text-gray-600">
-              Our emergency alert system connects you with nearby donors within
-              minutes when every second counts.
-            </p>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                alt="Emergency response"
-                className="w-full h-48 object-cover rounded-lg"
-              />
+            <div className="bg-red-50 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-gray-500">
+                  Response Time
+                </span>
+                <span className="text-red-600 font-bold">12 min avg</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-red-600 h-2.5 rounded-full"
+                  style={{ width: '85%' }}
+                ></div>
+              </div>
+              <div className="mt-4 text-sm text-gray-500">
+                <FaMapMarkerAlt className="inline mr-1 text-red-500" />
+                Donors located within 5km radius
+              </div>
             </div>
           </div>
 
-          {/* Feature 3 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-red-600">
-            <div className="flex items-center mb-4">
-              <div className="bg-red-100 p-3 rounded-full mr-4">
-                <FaUsers className="text-red-600 text-2xl" />
+          {/* Feature 3 - Nationwide Network */}
+          <div className="bg-white p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition-all duration-300">
+            <div className="flex items-start mb-6">
+              <div className="bg-red-100 p-3 rounded-xl mr-5">
+                <FaUsers className="text-red-600 text-3xl" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Community Support
-              </h3>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Nationwide Reach
+                </h3>
+                <p className="text-gray-600">
+                  Active donors in all 64 districts of Bangladesh, ready to
+                  help.
+                </p>
+              </div>
             </div>
-            <p className="text-gray-600">
-              Join 100,000+ donors and recipients who trust our platform for
-              safe, reliable blood donation connections.
-            </p>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                alt="Community support"
-                className="w-full h-48 object-cover rounded-lg"
-              />
+            <div className="bg-red-50 rounded-xl p-4">
+              <div className="flex items-center justify-center mb-3">
+                <img
+                  src="https://i.ibb.co/2qJ8W0z/bangladesh-map.png"
+                  alt="Bangladesh coverage map"
+                  className="h-32 object-contain"
+                />
+              </div>
+              <div className="text-center text-sm text-gray-600">
+                <FaHeartbeat className="inline mr-1 text-red-500" />
+                100% district coverage
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Additional Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <FaUsers className="text-red-600 text-4xl mx-auto mb-3" />
-            <p className="text-3xl font-bold text-red-700">50K+</p>
-            <p className="text-gray-600">Active Donors</p>
+        {/* Stats Section */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-200">
+            <div className="p-8 text-center">
+              <div className="bg-red-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaUsers className="text-red-600 text-3xl" />
+              </div>
+              <p className="text-4xl font-bold text-red-700 mb-2">50K+</p>
+              <p className="text-gray-600 font-medium">Active Donors</p>
+            </div>
+            <div className="p-8 text-center">
+              <div className="bg-red-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaHandHoldingHeart className="text-red-600 text-3xl" />
+              </div>
+              <p className="text-4xl font-bold text-red-700 mb-2">120K+</p>
+              <p className="text-gray-600 font-medium">Lives Saved</p>
+            </div>
+            <div className="p-8 text-center">
+              <div className="bg-red-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaAmbulance className="text-red-600 text-3xl" />
+              </div>
+              <p className="text-4xl font-bold text-red-700 mb-2">24/7</p>
+              <p className="text-gray-600 font-medium">Emergency Service</p>
+            </div>
+            <div className="p-8 text-center">
+              <div className="bg-red-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaBell className="text-red-600 text-3xl" />
+              </div>
+              <p className="text-4xl font-bold text-red-700 mb-2">12min</p>
+              <p className="text-gray-600 font-medium">Avg. Response</p>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <FaHandHoldingHeart className="text-red-600 text-4xl mx-auto mb-3" />
-            <p className="text-3xl font-bold text-red-700">120K+</p>
-            <p className="text-gray-600">Lives Saved</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <FaAmbulance className="text-red-600 text-4xl mx-auto mb-3" />
-            <p className="text-3xl font-bold text-red-700">24/7</p>
-            <p className="text-gray-600">Emergency Support</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <FaBell className="text-red-600 text-4xl mx-auto mb-3" />
-            <p className="text-3xl font-bold text-red-700">15min</p>
-            <p className="text-gray-600">Average Response Time</p>
-          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 text-center">
+          <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300">
+            Join Our Life-Saving Network
+          </button>
+          <p className="mt-4 text-gray-500">
+            Register as donor or request blood in minutes
+          </p>
         </div>
       </div>
     </section>

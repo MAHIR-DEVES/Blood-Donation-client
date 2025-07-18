@@ -66,8 +66,8 @@ const SignUp = () => {
         email,
         imageUrl,
         bloodGroup,
-        district: selectedDistrictName.toLowerCase(),
-        upazila: upazila.toLowerCase(),
+        district: selectedDistrictName,
+        upazila,
         role: 'donor',
         status: 'active',
       };
