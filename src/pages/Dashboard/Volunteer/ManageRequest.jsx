@@ -6,7 +6,7 @@ import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
 
 const ManageRequest = () => {
   const axiosSecure = useAxiosSecure();
-  const [status, setStatus] = useState('Pending');
+  const [status, setStatus] = useState('Complete');
   const [page, setPage] = useState(1);
   const limit = 6;
 

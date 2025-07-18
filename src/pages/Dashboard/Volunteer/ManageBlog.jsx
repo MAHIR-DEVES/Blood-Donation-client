@@ -53,10 +53,7 @@ const ManageBlog = () => {
                       Role
                     </th>
                     <th className="px-5 py-3 bg-white border-b text-left text-sm font-semibold text-gray-800">
-                      Delete
-                    </th>
-                    <th className="px-5 py-3 bg-white border-b text-left text-sm font-semibold text-gray-800">
-                      Update
+                      Action
                     </th>
                   </tr>
                 </thead>
